@@ -1,6 +1,11 @@
 import bcrypt
 import psycopg2
 
+def password_to_hash(plain_password):
+    password_bytes = plain_password.encode('utf-8')
+    hash = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
+    return hash
+
 def insert_user(email, password):
     connection = psycopg2.connect(
         dbname = 'bank',
@@ -11,9 +16,12 @@ def insert_user(email, password):
     )
     cur = connection.cursor()
     query = ''' INSERT INTO bank_user(email, password) VALUES(%s, %s)'''
-    cur.execute(query, (email, password))
+    hash = password_to_hash(password)
+    cur.execute(query, (email, hash))
     connection.commit()
     connection.close()
+
+insert_user('sexymeda@aol.com','admin')
 
 def get_hash_from_database(email):
 
