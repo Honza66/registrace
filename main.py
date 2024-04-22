@@ -1,10 +1,12 @@
 import bcrypt
 import psycopg2
+from tkinter import *
 
 def password_to_hash(plain_password):
     password_bytes = plain_password.encode('utf-8')
     hash = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
     return hash
+
 
 def insert_user(email, password):
     connection = psycopg2.connect(
@@ -41,6 +43,23 @@ def get_hash_from_database(email):
         return bytes.fromhex(user_hash_password[0][2:])
     else:
         return b''
+    
+def login_autentication(password,email):
+    hash = get_hash_from_database(email)
+    password_byte = bytes(password, encoding='utf-8')
+    if hash == b'':
+        print('neplatné')
+    else:
+        if bcrypt.checkpw(password_byte, hash):
+            print('Úspěšné přihlášení')
+        else:
+            print('neplatné')
+
+
+
+
+    
+
 
     
 
