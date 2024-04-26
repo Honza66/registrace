@@ -2,6 +2,8 @@ import bcrypt
 import psycopg2
 from tkinter import *
 
+
+
 def password_to_hash(plain_password):
     password_bytes = plain_password.encode('utf-8')
     hash = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
@@ -23,7 +25,6 @@ def insert_user(email, password):
     connection.commit()
     connection.close()
 
-insert_user('sexymeda@aol.com','admin')
 
 def get_hash_from_database(email):
 
@@ -54,6 +55,31 @@ def login_autentication(password,email):
             print('Úspěšné přihlášení')
         else:
             print('neplatné')
+            
+root = Tk()
+root.title('Registrace a přihlášení')
+root.geometry('300x300')
+root.resizable(False, False)
+
+registration_label = Label( text='Registrace')
+registration_label.grid(row=0, column=1)
+email_label = Label(text='email:')
+email_label.grid(row=1, column= 0 )
+email_entry = Entry()
+email_entry.grid(row=1, column=1)
+password_label = Label(text='heslo:')
+password_label.grid(row=2, column=0)
+password_entry = Entry(show='*')
+password_entry.grid(row=2, column=1)
+registration_button = Button(text='Zaregistrovat', command= lambda:insert_user(email_entry.get(), password_entry.get()))
+registration_button.grid(row=3, column=1)
+
+
+
+
+root.mainloop()
+
+
 
 
 
