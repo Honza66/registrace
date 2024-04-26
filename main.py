@@ -49,12 +49,12 @@ def login_autentication(password,email):
     hash = get_hash_from_database(email)
     password_byte = bytes(password, encoding='utf-8')
     if hash == b'':
-        print('neplatné')
+        result_label['text'] = 'Neplatné'
     else:
         if bcrypt.checkpw(password_byte, hash):
-            print('Úspěšné přihlášení')
+            result_label['text'] = 'Úspěšné přihlášení'
         else:
-            print('neplatné')
+            result_label['text'] = 'Neplatné'
             
 root = Tk()
 root.title('Registrace a přihlášení')
@@ -73,6 +73,23 @@ password_entry = Entry(show='*')
 password_entry.grid(row=2, column=1)
 registration_button = Button(text='Zaregistrovat', command= lambda:insert_user(email_entry.get(), password_entry.get()))
 registration_button.grid(row=3, column=1)
+
+login_label = Label(text='Přihlášení')
+login_label.grid(row=4, column=1)
+emai_login_label = Label(text='email:')
+emai_login_label.grid(row=5, column=0)
+email_login_entry = Entry()
+email_login_entry.grid(row=5, column=1)
+password_login_label = Label(text='heslo:')
+password_login_label.grid(row=6, column=0)
+password_login_entry = Entry(show='*')
+password_login_entry.grid(row=6, column=1)
+login_button = Button(text='Přihlásit se',command=lambda:login_autentication(password_login_entry.get(), email_login_entry.get()))
+login_button.grid(row=7, column=1)
+
+result_label = Label()
+result_label.grid(row=8, column=1)
+
 
 
 
